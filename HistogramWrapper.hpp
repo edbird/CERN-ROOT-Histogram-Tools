@@ -3,6 +3,7 @@
 
 
 #include "numerical_string_format.hpp"
+#include "function_debug.hpp"
 
 
 #include <memory>
@@ -82,6 +83,20 @@ class HistogramWrapperFloat
         , _histogram_properties_{histogram_properties}
         , _tfile_{tfile}
     {
+
+        /*
+        std::cout << __func__ << "\n"\
+                     "name=" << histogram_properties.name << "\n"\
+                     "n_bins_x=" << histogram_properties.n_bins_x << "\n"\
+                     "low_x=" << histogram_properties.low_x << "\n"\
+                     "high_x=" << histogram_properties.high_x << "\n"\
+                     "draw_option=" << histogram_properties.draw_option << "\n"\
+                     "canvas_path=" << histogram_properties.canvas_path << std::endl;
+        */
+
+        DEBUG_MESSAGE(function_debug_locals(__PRETTY_FUNCTION__, {{"name", histogram_properties.name}, {"n_bins_x", std::to_string(histogram_properties.n_bins_x)}, {"low_x", std::to_string(histogram_properties.low_x)}, {"high_x", std::to_string(histogram_properties.high_x)}}));
+
+
         Init();
     }
 
@@ -192,6 +207,9 @@ class HistogramGroupFloat
 
     void Add(const std::string& name, Int_t n_bins_x, Double_t low_x, Double_t high_x)
     {
+        //DEBUG_MESSAGE(function_debug_arguments(__PRETTY_FUNCTION__, {{"name", name}, {"n_bins_x", std::to_string(n_bins_x)}, {"low_x", std::to_string(low_x)}, {"high_x", std::to_string(high_x)}}));
+        //DEBUG_MESSAGE(function_debug_arguments(__PRETTY_FUNCTION__, "name", name, "n_bins_x", std::to_string(n_bins_x), "low_x", std::to_string(low_x), "high_x", std::to_string(high_x)));
+
         // initialize properties
         HistogramProperties histogram_properties{_default_histogram_properties_};
         histogram_properties.name = name;
