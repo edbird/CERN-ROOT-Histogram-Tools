@@ -123,7 +123,12 @@ class HistogramWrapperFloat
 
     void Canvas() //const
     {
-        std::string full_path{_histogram_properties_.canvas_path + std::string("/") + _histogram_properties_.name};
+        std::string full_path;
+        if(_histogram_properties_.canvas_path.length() > 0)
+        {
+            full_path = _histogram_properties_.canvas_path + std::string("/");
+        }
+        full_path += _histogram_properties_.name;
         std::string full_path_png{full_path + std::string(".png")};
         std::string full_path_C{full_path + std::string(".C")};
 
@@ -149,7 +154,7 @@ class HistogramWrapperFloat
     }
 
     //TH1F* Get()
-    TH1F& Get()
+    TH1F& Ref()
     {
         //return _histogram_.get();
         return _histogram_;
@@ -205,7 +210,7 @@ class HistogramGroupFloat
 
     HistogramGroupFloat(const HistogramGroupFloat& other) = default;
 
-    void Add(const std::string& name, Int_t n_bins_x, Double_t low_x, Double_t high_x)
+    std::string Add(const std::string& name, Int_t n_bins_x, Double_t low_x, Double_t high_x)
     {
         //DEBUG_MESSAGE(function_debug_arguments(__PRETTY_FUNCTION__, {{"name", name}, {"n_bins_x", std::to_string(n_bins_x)}, {"low_x", std::to_string(low_x)}, {"high_x", std::to_string(high_x)}}));
         //DEBUG_MESSAGE(function_debug_arguments(__PRETTY_FUNCTION__, "name", name, "n_bins_x", std::to_string(n_bins_x), "low_x", std::to_string(low_x), "high_x", std::to_string(high_x)));
@@ -226,13 +231,17 @@ class HistogramGroupFloat
         // add to container
         //_histogram_wrapper_.push_back(next);
         _histogram_wrapper_.insert({name, next});
+
+
+        return name;
     }
 
-    void Add(Int_t n_bins_x, Double_t low_x, Double_t high_x)
+    std::string Add(Int_t n_bins_x, Double_t low_x, Double_t high_x)
     {
         // create a new name
         std::string name{_histogram_group_properties_.name_base + to_string_fixed_width(_histogram_wrapper_.size(), 6)};
         Add(name, n_bins_x, low_x, high_x);
+        return name;
     }
 
     void Canvas()
@@ -253,9 +262,16 @@ class HistogramGroupFloat
         }
     }
 
+    /*
     HistogramWrapperFloat& Ref(const std::string& name)
     {
         return _histogram_wrapper_.at(name);
+    }
+    */
+
+    TH1F& Ref(const std::string& name)
+    {
+        return _histogram_wrapper_.at(name).Ref();
     }
 
 
