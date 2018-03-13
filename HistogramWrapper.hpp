@@ -94,7 +94,8 @@ class HistogramWrapperFloat
                      "canvas_path=" << histogram_properties.canvas_path << std::endl;
         */
 
-        DEBUG_MESSAGE(function_debug_locals(__PRETTY_FUNCTION__, {{"name", histogram_properties.name}, {"n_bins_x", std::to_string(histogram_properties.n_bins_x)}, {"low_x", std::to_string(histogram_properties.low_x)}, {"high_x", std::to_string(histogram_properties.high_x)}}));
+        //DEBUG_MESSAGE(function_debug_locals(__PRETTY_FUNCTION__, {{"name", histogram_properties.name}, {"n_bins_x", std::to_string(histogram_properties.n_bins_x)}, {"low_x", std::to_string(histogram_properties.low_x)}, {"high_x", std::to_string(histogram_properties.high_x)}}));
+        DEBUG_MESSAGE(function_debug_locals(__PRETTY_FUNCTION__, "name", histogram_properties.name, "n_bins_x", histogram_properties.n_bins_x, "low_x", histogram_properties.low_x, "high_x", histogram_properties.high_x));
 
 
         Init();
@@ -106,7 +107,8 @@ class HistogramWrapperFloat
     {
         //_tfile_->cd();
         //_histogram_->Write();
-        Write();
+        // Note: no longer write as file may have closed
+        //Write();
 
         // decouple before pointer goes out of scope
         // TODO; doesn't work if class is copied
